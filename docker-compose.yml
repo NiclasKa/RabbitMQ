@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  orig:
+    build: ./ORIG
+    volumes:
+      - ./orig:/usr/src/app
+    ports:
+      - 3001:3001
+    depends_on:
+      - obse
+      - rabbitmq3
+
+  obse:
+    build: ./OBSE
+    volumes:
+      - ./obse:/usr/src/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - rabbitmq3
+
+  rabbitmq3:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+
+  httpserv:
+    build: ./HTTPSERV
+    volumes:
+      - ./httpserv:/usr/src/app
+    ports:
+      - 8080:8080
+    depends_on:
+      - orig
+      - rabbitmq3
+      - obse
