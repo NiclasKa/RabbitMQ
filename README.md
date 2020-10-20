@@ -7,3 +7,6 @@ Perceived (in your mind) benefits of the topic-based communication compared to r
  * RabbitMQ is asynchronous, and you can put the messages in the queue to wait and not process them immediatelly.
 
 Your main learnings
+ * I learned to use Docker more efficiently. There were multiple containers that needed configuring and they all needed to work in a network. For example I learned Docker volumes,    and had to dive in more deeply to the Docker to understand some of it's core mechanics.
+ * Message broker technology was new to me. I learned the concept of it and learned how to use RabbitMQ in NodeJS.
+ * Addional coding skills in NodeJS, since the task needed creating multiple microservices
