@@ -22,10 +22,6 @@ function connect() {
                   throw error1;
             }
    
-            fs.writeFile('../obse/logs.txt', '', function (err) {
-               if (err) throw err;
-            }); 
-   
             const exchange = 'topic_logs';
    
             channel.assertExchange(exchange, 'topic', {
@@ -37,15 +33,12 @@ function connect() {
             }, function(error2, q) {
                if (error2) throw error2;
    
-               channel.bindQueue(q.queue, exchange, "my.i");
                channel.bindQueue(q.queue, exchange, "my.o");
          
-               channel.consume(q.queue, function(msg) {
-                  const date = new Date().toISOString();
-                  const write = `${date} Topic ${msg.fields.routingKey}: ${msg.content.toString()} `;
-                  fs.appendFile('../obse/logs.txt', write, function (err) {
-                     if (err) throw err;
-                  }); 
+               channel.consume(q.queue, async function(msg) {
+                  console.log(`Got message ${msg.content.toString()}`)
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  channel.publish(exchange, "my.i", Buffer.from(`Got ${msg.content.toString()}`));
                }, {
                  noAck: true
                });
